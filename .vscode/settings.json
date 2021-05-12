@@ -12,8 +12,5 @@
   "[dockerfile]": {
     "editor.formatOnSave": false
   },
-  "python.analysis.extraPaths": [
-    "./lib",
-    "./tests"
-  ]
+  "python.analysis.extraPaths": ["./lib", "./tests"]
 }
