@@ -2,17 +2,25 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file 14.0.Dockerfile --tag doodba:14.0-onbuild
+      - uses: actions/checkout@v2
+      - name: docker Login
+        env:
+          DOCKERHUB_LOGIN: ${{ secrets.DOCKERHUB_LOGIN }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      - name: Build the Docker image
+        run: docker build . --file 14.0.Dockerfile --tag doodba:14.0-onbuild
+      - name: docker push
+        run: |
+          docker push saramadsoft/doodba:14.0-onbuild
