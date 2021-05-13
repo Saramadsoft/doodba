@@ -20,7 +20,7 @@ jobs:
           docker login -u $DOCKERHUB_LOGIN -p $DOCKERHUB_TOKEN
 
       - name: Build the Docker image
-        run: docker build . --file 14.0.Dockerfile --tag doodba:14.0-onbuild
+        run: docker build . --file 14.0.Dockerfile --tag saramadsoft/doodba:14.0-onbuild
 
       - name: Push docker image to docker hub
         run: |
