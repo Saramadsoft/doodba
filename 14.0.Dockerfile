@@ -33,12 +33,12 @@ ENV DB_FILTER=.* \
 
 # Other requirements and recommendations
 # See https://github.com/$ODOO_SOURCE/blob/$ODOO_VERSION/debian/control
-RUN apt-get -qq update \
-    && apt-get install -yqq --no-install-recommends \
+RUN apt-get  update \
+    && apt-get install -y --no-install-recommends \
         curl \
     && curl -SLo wkhtmltox.deb https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/${WKHTMLTOPDF_VERSION}/wkhtmltox_${WKHTMLTOPDF_VERSION}-1.stretch_amd64.deb \
     && echo "${WKHTMLTOPDF_CHECKSUM}  wkhtmltox.deb" | sha256sum -c - \
-    && apt-get install -yqq --no-install-recommends \
+    && apt-get install -y --no-install-recommends \
         ./wkhtmltox.deb \
         chromium \
         ffmpeg \
@@ -55,11 +55,13 @@ RUN apt-get -qq update \
         zlibc \
     && echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' >> /etc/apt/sources.list.d/postgresql.list \
     && curl -SL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+    && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get update \
+    && apt-get install -y --no-install-recommends nodejs \
     && curl --silent -L --output geoipupdate_${GEOIP_UPDATER_VERSION}_linux_amd64.deb https://github.com/maxmind/geoipupdate/releases/download/v${GEOIP_UPDATER_VERSION}/geoipupdate_${GEOIP_UPDATER_VERSION}_linux_amd64.deb \
     && dpkg -i geoipupdate_${GEOIP_UPDATER_VERSION}_linux_amd64.deb \
     && rm geoipupdate_${GEOIP_UPDATER_VERSION}_linux_amd64.deb \
-    && apt-get autopurge -yqq \
+    && apt-get autopurge -y \
     && rm -Rf wkhtmltox.deb /var/lib/apt/lists/* /tmp/* \
     && sync
 
@@ -121,7 +123,7 @@ RUN build_deps=" \
         zlib1g-dev \
     " \
     && apt-get update \
-    && apt-get install -yqq --no-install-recommends $build_deps \
+    && apt-get install -y --no-install-recommends $build_deps \
     && pip install \
         -r https://raw.githubusercontent.com/$ODOO_SOURCE/$ODOO_VERSION/requirements.txt \
         'websocket-client~=0.56' \
@@ -139,8 +141,8 @@ RUN build_deps=" \
         watchdog \
         wdb \
     && (python3 -m compileall -q /usr/local/lib/python3.8/ || true) \
-    && apt-get purge -yqq $build_deps \
-    && apt-get autopurge -yqq \
+    && apt-get purge -y $build_deps \
+    && apt-get autopurge -y \
     && rm -Rf /var/lib/apt/lists/* /tmp/*
 
 # Metadata
