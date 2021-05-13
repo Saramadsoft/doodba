@@ -21,6 +21,7 @@ jobs:
 
       - name: Build the Docker image
         run: docker build . --file 14.0.Dockerfile --tag doodba:14.0-onbuild
-      - name: docker push
+
+      - name: Push docker image to docker hub
         run: |
           docker push saramadsoft/doodba:14.0-onbuild
